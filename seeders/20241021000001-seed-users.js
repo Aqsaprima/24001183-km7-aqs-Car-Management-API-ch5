@@ -30,7 +30,7 @@ module.exports = {
         name: faker.name.fullName(),
         age: faker.number.int({ min: 10, max: 30 }),
         address: faker.address.streetAddress(),
-        role: faker.helpers.arrayElement(["user"]),
+        role: faker.helpers.arrayElement(["member"]),
         createdAt: new Date(),
         updatedAt: new Date(),
       });

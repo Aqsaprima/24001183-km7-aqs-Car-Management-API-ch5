@@ -13,7 +13,6 @@ module.exports = async (req, res, next) => {
     }
 
     const token = bearerToken.split("Bearer ")[1];
-
     const payload = jwt.verify(token, process.env.JWT_SECRET);
 
     req.user = payload;
