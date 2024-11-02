@@ -11,7 +11,7 @@ module.exports = {
     );
     const userIds = users[0];
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 30; i++) {
       const password = "admin123";
       const hashedPassword = await bcrypt.hash(password, 10);
 
