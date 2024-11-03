@@ -1,4 +1,4 @@
-const { Users } = require("../models");
+const { Users, Auths } = require("../models");
 
 const getCurrentUser = async (req, res) => {
   console.log(req.user);
@@ -59,14 +59,14 @@ const createUser = async (req, res) => {
 
   if (role) {
     if (role == "superAdmin") {
-      return res.status(400).json({
+      return res.status(401).json({
         status: "Failed",
         message: "cannot add Super Admin",
         isSuccess: false,
         data: null,
       });
     } else if (role == "admin" && req.user.role != "superAdmin") {
-      return res.status(400).json({
+      return res.status(401).json({
         status: "Failed",
         message: "only Super Admin can add admin",
         isSuccess: false,
@@ -153,7 +153,7 @@ const getUserById = async (req, res) => {
 
 const updateUser = async (req, res) => {
   const id = req.params.id;
-  const { name, age, address, role } = req.body;
+  const { name, age, address } = req.body;
 
   try {
     const user = await Users.findOne({
@@ -175,7 +175,6 @@ const updateUser = async (req, res) => {
       name,
       age,
       address,
-      role,
     });
 
     res.status(200).json({
@@ -188,7 +187,6 @@ const updateUser = async (req, res) => {
           name,
           age,
           address,
-          role,
         },
       },
     });
@@ -221,6 +219,16 @@ const deleteUser = async (req, res) => {
       });
     }
 
+    const auths = await Auths.findAll({
+      where: {
+        userId: user.id,
+      },
+    });
+
+    for (const auth of auths) {
+      await auth.destroy();
+    }
+    console.log(auths, user);
     await user.destroy();
 
     res.status(200).json({
