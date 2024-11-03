@@ -1,0 +1,306 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Car Management API",
+    "version": "1.0.0",
+    "description": "API to manage Binar car data"
+  },
+  "tags": [
+    {
+      "name": "Authentication"
+    }
+  ],
+  "servers": [
+    {
+      "url": "http://localhost:3000/api/v1",
+      "description": "Local server"
+    }
+  ],
+  "paths": {
+    "/auth": {
+      "get": {
+        "tags": ["Authentication"],
+        "summary": "Retrieve a list of auth data",
+        "description": "Fetch paginated authentication data including user details",
+        "parameters": [
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "description": "Number of records per page"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Page number to retrieve"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get auth data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success get auth data"
+                    },
+                    "isSuccess": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "pagination": {
+                          "type": "object",
+                          "properties": {
+                            "currentPage": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "limit": {
+                              "type": "integer",
+                              "example": 10
+                            }
+                          }
+                        },
+                        "auths": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 11
+                              },
+                              "email": {
+                                "type": "string",
+                                "example": "Kristian.Wehner28@gmail.com"
+                              },
+                              "password": {
+                                "type": "string",
+                                "example": "$2b$10$qGn2inxbT01xe8TwgflNpO9azbu140CoRPAPkJOY4svQNd0Bx6RgK"
+                              },
+                              "confirmPassword": {
+                                "type": "string",
+                                "example": "$2b$10$qGn2inxbT01xe8TwgflNpO9azbu140CoRPAPkJOY4svQNd0Bx6RgK"
+                              },
+                              "userId": {
+                                "type": "integer",
+                                "example": 12
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "2024-11-02T00:02:50.002Z"
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "2024-11-02T00:02:50.002Z"
+                              },
+                              "user": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "integer",
+                                    "example": 12
+                                  },
+                                  "name": {
+                                    "type": "string",
+                                    "example": "Neil Hauck"
+                                  },
+                                  "age": {
+                                    "type": "integer",
+                                    "example": 29
+                                  },
+                                  "address": {
+                                    "type": "string",
+                                    "example": "77918 Janis Expressway"
+                                  },
+                                  "role": {
+                                    "type": "string",
+                                    "example": "superAdmin"
+                                  },
+                                  "createdAt": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2024-11-02T00:02:49.849Z"
+                                  },
+                                  "updatedAt": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2024-11-02T00:02:49.849Z"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    },
+                    "isSuccess": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "data": {
+                      "type": "array",
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Authentication"],
+        "summary": "User login",
+        "description": "Authenticate a user with email and password",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "Sherman15@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "admin123"
+                  }
+                },
+                "required": ["email", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "login success"
+                    },
+                    "isSuccess": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "username": {
+                          "type": "string",
+                          "example": "Lela Lynch"
+                        },
+                        "token": {
+                          "type": "string",
+                          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsInVzZXJJZCI6MTQsInJvbGUiOiJzdXBlckFkbWluIiwiaWF0IjoxNzMwNjQ3MTE5LCJleHAiOjE3MzA3MzM1MTl9.UqxeDbEl2IcSN-CNQVLtTYIqsVd0Y37c601Bkle-xGY"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Could be due to incorrect email or password",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "EmailNotRegistered": {
+                    "summary": "Email not registered",
+                    "value": {
+                      "status": "Failed",
+                      "message": "Email not registered",
+                      "isSuccess": false,
+                      "data": null
+                    }
+                  },
+                  "IncorrectPassword": {
+                    "summary": "Password incorrect",
+                    "value": {
+                      "status": "Failed",
+                      "message": "Password incorrect",
+                      "isSuccess": false,
+                      "data": null
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "isSuccess": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "array"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

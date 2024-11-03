@@ -4,6 +4,12 @@ const { Auths, Users } = require("../models");
 
 const getAllAuth = async (req, res) => {
   try {
+    const { page, size } = req.query;
+
+    const pageSize = parseInt(size) || 10;
+    const pageNum = parseInt(page) || 1;
+    const offset = (pageNum - 1) * pageSize;
+
     const auths = await Auths.findAll({
       include: [
         {
@@ -11,13 +17,19 @@ const getAllAuth = async (req, res) => {
           as: "user",
         },
       ],
+      limit: pageSize,
+      offset,
     });
 
     res.status(200).json({
       status: "Success",
-      message: "Success get cars data",
+      message: "Success get auth data",
       isSuccess: true,
       data: {
+        pagination: {
+          currentPage: pageNum,
+          limit: pageSize,
+        },
         auths,
       },
     });
@@ -29,15 +41,6 @@ const getAllAuth = async (req, res) => {
       data: null,
     });
   }
-};
-
-const register = async (req, res, next) => {
-  try {
-    res.status(201).json({
-      status: "Success",
-      data: {},
-    });
-  } catch (err) {}
 };
 
 const login = async (req, res, next) => {
@@ -58,7 +61,7 @@ const login = async (req, res, next) => {
 
     console.log(data);
     if (!data) {
-      return res.status(404).json({
+      return res.status(401).json({
         status: "Failed",
         message: "Email not registered",
         isSuccess: false,
@@ -91,7 +94,7 @@ const login = async (req, res, next) => {
     } else {
       res.status(401).json({
         status: "Failed",
-        message: "password incorect",
+        message: "password incorrect",
         isSuccess: false,
         data: null,
       });
@@ -100,25 +103,13 @@ const login = async (req, res, next) => {
     res.status(500).json({
       status: "Failed",
       message: err.message,
+      isSuccess: false,
       data: null,
     });
   }
 };
 
-const authenticate = async (req, res) => {
-  try {
-    res.status(200).json({
-      status: "Success",
-      data: {
-        user: req.user,
-      },
-    });
-  } catch (err) {}
-};
-
 module.exports = {
-  register,
   login,
-  authenticate,
   getAllAuth,
 };

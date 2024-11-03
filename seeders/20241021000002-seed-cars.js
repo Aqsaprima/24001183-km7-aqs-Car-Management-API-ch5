@@ -11,6 +11,7 @@ module.exports = {
         model: faker.vehicle.model(),
         type: faker.vehicle.type(),
         price: parseFloat(faker.commerce.price(15000, 50000, 2)),
+        createdBy: faker.helpers.arrayElement(["system"]),
         createdAt: new Date(),
         updatedAt: new Date(),
       });

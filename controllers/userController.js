@@ -1,5 +1,32 @@
 const { Users } = require("../models");
 
+const getCurrentUser = async (req, res) => {
+  console.log(req.user);
+  try {
+    const user = await Users.findOne({
+      where: {
+        id: req.user.userId,
+      },
+    });
+
+    res.status(200).json({
+      status: "Success",
+      message: "this is the account currently logged in",
+      isSuccess: true,
+      data: {
+        user,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "Failed",
+      message: error.message,
+      isSuccess: false,
+      data: null,
+    });
+  }
+};
+
 const register = async (req, res) => {
   const { name, age, address } = req.body;
   try {
@@ -80,7 +107,7 @@ const getAllUser = async (req, res) => {
 
     res.status(200).json({
       status: "Success",
-      message: "Success get cars data",
+      message: "Success get users data",
       isSuccess: true,
       data: {
         users,
@@ -136,7 +163,7 @@ const updateUser = async (req, res) => {
     });
 
     if (!user) {
-      res.status(404).json({
+      return res.status(404).json({
         status: "Fail",
         message: "Data not found",
         isSuccess: false,
@@ -144,7 +171,7 @@ const updateUser = async (req, res) => {
       });
     }
 
-    await Users.update({
+    await user.update({
       name,
       age,
       address,
@@ -186,7 +213,7 @@ const deleteUser = async (req, res) => {
     });
 
     if (!user) {
-      res.status(404).json({
+      return res.status(404).json({
         status: "Fail",
         message: "Data not found",
         isSuccess: false,
@@ -194,7 +221,7 @@ const deleteUser = async (req, res) => {
       });
     }
 
-    await Users.destroy();
+    await user.destroy();
 
     res.status(200).json({
       status: "Success",
@@ -219,4 +246,5 @@ module.exports = {
   updateUser,
   deleteUser,
   register,
+  getCurrentUser,
 };

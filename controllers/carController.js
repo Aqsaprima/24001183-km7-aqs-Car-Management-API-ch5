@@ -1,13 +1,20 @@
-const { Cars } = require("../models");
+const { Cars, Users } = require("../models");
 
 const createCar = async (req, res) => {
   const { model, type, price } = req.body;
 
   try {
+    const user = await Users.findOne({
+      where: {
+        id: req.user.userId,
+      },
+    });
+
     const newCars = await Cars.create({
       model,
       type,
       price,
+      createdBy: user.name,
     });
 
     res.status(201).json({
@@ -92,8 +99,14 @@ const updateCar = async (req, res) => {
       },
     });
 
+    const user = await Users.findOne({
+      where: {
+        id: req.user.userId,
+      },
+    });
+
     if (!car) {
-      res.status(404).json({
+      return res.status(404).json({
         status: "Fail",
         message: "Data not found",
         isSuccess: false,
@@ -101,10 +114,11 @@ const updateCar = async (req, res) => {
       });
     }
 
-    await Products.update({
+    await car.update({
       model,
       type,
-      stock,
+      price,
+      updatedBy: user.name,
     });
 
     res.status(200).json({
@@ -112,7 +126,7 @@ const updateCar = async (req, res) => {
       message: "Success update car",
       isSuccess: true,
       data: {
-        product: {
+        car: {
           id,
           model,
           type,
@@ -141,8 +155,18 @@ const deleteCar = async (req, res) => {
       },
     });
 
+    const user = await Users.findOne({
+      where: {
+        id: req.user.userId,
+      },
+    });
+
+    await car.update({
+      deletedBy: user.name,
+    });
+
     if (!car) {
-      res.status(404).json({
+      return res.status(404).json({
         status: "Fail",
         message: "Data not found",
         isSuccess: false,
@@ -150,7 +174,7 @@ const deleteCar = async (req, res) => {
       });
     }
 
-    await Cars.destroy();
+    await car.destroy();
 
     res.status(200).json({
       status: "Success",
