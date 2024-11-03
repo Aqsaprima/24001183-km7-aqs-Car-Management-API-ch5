@@ -6,9 +6,9 @@
     "description": "API to manage Binar car data"
   },
   "tags": [
-    {
-      "name": "Authentication"
-    }
+    { "name": "Authentication" },
+    { "name": "Cars" },
+    { "name": "Users" }
   ],
   "servers": [
     {
@@ -293,6 +293,699 @@
                     },
                     "data": {
                       "type": "array"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/car": {
+      "post": {
+        "tags": ["Cars"],
+        "summary": "Create a new car",
+        "operationId": "createCar",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "example": "mustang"
+                  },
+                  "type": {
+                    "type": "string",
+                    "example": "nissan"
+                  },
+                  "price": {
+                    "type": "number",
+                    "format": "float",
+                    "example": "320"
+                  }
+                },
+                "required": ["model", "type", "price"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success create new cars",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "isSuccess": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newCars": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer"
+                            },
+                            "model": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string"
+                            },
+                            "price": {
+                              "type": "number",
+                              "format": "float"
+                            },
+                            "createdBy": {
+                              "type": "string"
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "deletedBy": {
+                              "type": "string"
+                            },
+                            "updatedBy": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "example1": {
+                    "summary": "A successful response example for creating a new car",
+                    "value": {
+                      "status": "Success",
+                      "message": "Success create new cars",
+                      "isSuccess": true,
+                      "data": {
+                        "newCars": {
+                          "id": 41,
+                          "model": "mustang",
+                          "type": "nissan",
+                          "price": 320,
+                          "createdBy": "Lela Lynch",
+                          "createdAt": "2024-11-03T16:12:38.177Z",
+                          "updatedAt": "2024-11-03T16:12:38.177Z",
+                          "deletedBy": null,
+                          "updatedBy": null
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to get cars data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    },
+                    "isSuccess": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "data": {
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Cars"],
+        "summary": "Get all cars",
+        "description": "Retrieves a list of all cars. Requires authentication.",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of cars retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Success get cars data"
+                    },
+                    "isSuccess": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "cars": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 11
+                              },
+                              "model": {
+                                "type": "string",
+                                "example": "Wrangler"
+                              },
+                              "type": {
+                                "type": "string",
+                                "example": "Sedan"
+                              },
+                              "price": {
+                                "type": "number",
+                                "format": "float",
+                                "example": 314.29
+                              },
+                              "createdBy": {
+                                "type": "string",
+                                "example": null
+                              },
+                              "deletedBy": {
+                                "type": "string",
+                                "example": null
+                              },
+                              "updatedBy": {
+                                "type": "string",
+                                "example": null
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "2024-11-02T00:02:51.864Z"
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "2024-11-02T00:02:51.864Z"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "model",
+                              "type",
+                              "price",
+                              "createdAt",
+                              "updatedAt"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "required": ["status", "message", "isSuccess", "data"]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to get cars data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    },
+                    "isSuccess": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "data": {
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/car/{id}": {
+      "get": {
+        "tags": ["Cars"],
+        "summary": "Get car by ID",
+        "description": "Retrieves a specific car's data using its ID.",
+        "operationId": "getCarById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the car to retrieve",
+            "schema": {
+              "type": "integer",
+              "example": "11"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get car data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "isSuccess": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "car": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer"
+                            },
+                            "model": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string"
+                            },
+                            "price": {
+                              "type": "number",
+                              "format": "float"
+                            },
+                            "createdBy": {
+                              "type": "string"
+                            },
+                            "deletedBy": {
+                              "type": "string"
+                            },
+                            "updatedBy": {
+                              "type": "string"
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "example1": {
+                    "summary": "A successful response example",
+                    "value": {
+                      "status": "Success",
+                      "message": "Success get car data",
+                      "isSuccess": true,
+                      "data": {
+                        "car": {
+                          "id": 11,
+                          "model": "Wrangler",
+                          "type": "Sedan",
+                          "price": 314.29,
+                          "createdBy": null,
+                          "deletedBy": null,
+                          "updatedBy": null,
+                          "createdAt": "2024-11-02T00:02:51.864Z",
+                          "updatedAt": "2024-11-02T00:02:51.864Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to get cars data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    },
+                    "isSuccess": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "data": {
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": ["Cars"],
+        "summary": "Update a car by ID",
+        "operationId": "updateCar",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the car to update",
+            "schema": {
+              "type": "number",
+              "example": 11
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "example": "mustang"
+                  },
+                  "type": {
+                    "type": "string",
+                    "example": "Sedan"
+                  },
+                  "price": {
+                    "type": "number",
+                    "format": "float",
+                    "example": 319.2
+                  }
+                },
+                "required": ["model", "type", "price"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success update car",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "isSuccess": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "car": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "model": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string"
+                            },
+                            "price": {
+                              "type": "number",
+                              "format": "float"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "example1": {
+                    "summary": "A successful response example for updating a car",
+                    "value": {
+                      "status": "Success",
+                      "message": "Success update car",
+                      "isSuccess": true,
+                      "data": {
+                        "car": {
+                          "id": "11",
+                          "model": "mustang",
+                          "type": "Sedan",
+                          "price": 319.2
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Data not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "isSuccess": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "array"
+                    }
+                  }
+                },
+                "examples": {
+                  "example1": {
+                    "summary": "A response example when data is not found",
+                    "value": {
+                      "status": "Fail",
+                      "message": "Data not found",
+                      "isSuccess": false,
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to get cars data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    },
+                    "isSuccess": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "data": {
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Cars"],
+        "summary": "Delete a car by ID",
+        "operationId": "deleteCar",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the car to delete",
+            "schema": {
+              "type": "string",
+              "example": 11
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success delete product",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "isSuccess": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "array"
+                    }
+                  }
+                },
+                "examples": {
+                  "example1": {
+                    "summary": "A successful response example for deleting a car",
+                    "value": {
+                      "status": "Success",
+                      "message": "Success delete product",
+                      "isSuccess": true,
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Data not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "isSuccess": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "array"
+                    }
+                  }
+                },
+                "examples": {
+                  "example1": {
+                    "summary": "A response example when data is not found",
+                    "value": {
+                      "status": "Fail",
+                      "message": "Data not found",
+                      "isSuccess": false,
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to get cars data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    },
+                    "isSuccess": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "data": {
+                      "example": null
                     }
                   }
                 }

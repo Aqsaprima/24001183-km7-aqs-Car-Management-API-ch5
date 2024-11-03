@@ -155,16 +155,6 @@ const deleteCar = async (req, res) => {
       },
     });
 
-    const user = await Users.findOne({
-      where: {
-        id: req.user.userId,
-      },
-    });
-
-    await car.update({
-      deletedBy: user.name,
-    });
-
     if (!car) {
       return res.status(404).json({
         status: "Fail",
